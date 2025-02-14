@@ -51,23 +51,23 @@ public class Character : MonoBehaviour
     {
         if(cursorPos == Vector2.zero)
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             animator.SetBool("goingDown", true);
         }
         else
         {
-            rb.velocity = direction.normalized * moveSpeed;
+            rb.linearVelocity = direction.normalized * moveSpeed;
 
             animator.SetBool("goingUp", false);
             animator.SetBool("goingDown", false);
             animator.SetBool("goingLeft", false);
             animator.SetBool("goingRight", false);
 
-            if (rb.velocity.y > 0)
+            if (rb.linearVelocity.y > 0)
             {
-                if (Math.Abs(rb.velocity.x) > Math.Abs(rb.velocity.y))
+                if (Math.Abs(rb.linearVelocity.x) > Math.Abs(rb.linearVelocity.y))
                 {
-                    if (rb.velocity.x > 0)
+                    if (rb.linearVelocity.x > 0)
                     {
                         animator.SetBool("goingRight", true);
                     }
@@ -83,9 +83,9 @@ public class Character : MonoBehaviour
             }
             else
             {
-                if (Math.Abs(rb.velocity.x) > Math.Abs(rb.velocity.y))
+                if (Math.Abs(rb.linearVelocity.x) > Math.Abs(rb.linearVelocity.y))
                 {
-                    if (rb.velocity.x > 0)
+                    if (rb.linearVelocity.x > 0)
                     {
                         animator.SetBool("goingRight", true);
                     }
