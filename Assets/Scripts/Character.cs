@@ -17,18 +17,11 @@ public class Character : MonoBehaviour
     CapsuleCollider2D cc;
     public float moveSpeed;
     public Animator animator;
-    public GameObject square;
     public Text test;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         cc = GetComponent<CapsuleCollider2D>();
-        float screenHeight = 2f * Camera.main.orthographicSize;
-        float screenWidth = screenHeight * Screen.width / Screen.height;
-        float scaleX = screenWidth/1080f*185f;
-        float scaleY = screenHeight/1920f*185f;
-        transform.localScale = new Vector3(scaleX, scaleY, 1);
-        square.transform.localScale = new Vector3(5.65f*scaleX,5.65f* scaleY, 1);
         animator = GetComponent<Animator>();
     }
 
@@ -108,20 +101,20 @@ public class Character : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Coin")
+        if(collision.gameObject.CompareTag("Coin"))
         {
             //generate new labyrinth hide the coin
             collision.gameObject.SetActive(false);
             GameManager.Instance.NextLevel();
             moveSpeed += 0.05f;
         }
-        if(collision.gameObject.tag == "TimeBonus")
+        if(collision.gameObject.CompareTag("TimeBonus"))
         {
             //add time and hide the bonus
             collision.gameObject.SetActive(false);
             Timer.Instance.AddTime();
         }
-        if (collision.gameObject.tag == "SpeedBooster")
+        if (collision.gameObject.CompareTag("SpeedBooster"))
         {
             //add moveSpeed and hide the booster
             collision.gameObject.SetActive(false);

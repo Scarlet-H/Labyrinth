@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
     public Character character;
     public Coin coin;
     public TimeBonus timeBonus;
-    public Graph graph;
+    private Graph graph;
     public TriangleGraph triangleGraph;
+    public SquareGraph squareGraph;
     public int startingPoint;
     public int spawnPoint;
     public int mode = 0;
@@ -37,13 +38,11 @@ public class GameManager : MonoBehaviour
             mainCamera.backgroundColor = Color.black;
         }
         //PlayerPrefs.DeleteAll();
-
         //game initialize
-        triangleGraph.InitializeGraph();
-        triangleGraph.RDFS(6);
-        //TODO: change this shit (SpawnPoint is dependent on the graph and i need it to support all types of graph)
-        //graph.InitializeGraph();
-        //startingPoint = UnityEngine.Random.Range(0, graph.vertices * graph.vertices - 1);
+        graph = triangleGraph;
+        graph.InitializeGraph();
+        //startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
+        //print("starting point is " + startingPoint);
         //graph.RDFS(startingPoint);
         //spawnPoint = UnityEngine.Random.Range(0, 4);
         //Spawn();
@@ -57,7 +56,7 @@ public class GameManager : MonoBehaviour
     {
         graph.Renew();  //renew the graph
         ScoreManager.instance.AddPoint();   //add point to the score
-        startingPoint = UnityEngine.Random.Range(0, graph.vertices * graph.vertices - 1); //choose new random start point for generating
+        startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1); //choose new random start point for generating
         graph.RDFS(startingPoint); //use RDFS to generate labyrinth 
         spawnPoint = UnityEngine.Random.Range(0, 4); //choose a random spawn point for character
         Spawn(); //spawn character and coin and timebonus (if needed)
@@ -72,12 +71,12 @@ public class GameManager : MonoBehaviour
                 coin.Spawn(graph.Vertex.Count - 1, graph.Vertex);
                 break;
             case 1:
-                character.Spawn(graph.vertices - 1, graph.Vertex);
-                coin.Spawn(graph.Vertex.Count - graph.vertices, graph.Vertex);
+                character.Spawn(graph.Vertex.Count - 1, graph.Vertex);
+                coin.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
                 break;
             case 2:
-                character.Spawn(graph.Vertex.Count - graph.vertices, graph.Vertex);
-                coin.Spawn(graph.vertices - 1, graph.Vertex);
+                character.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
+                coin.Spawn(graph.Vertex.Count - 1, graph.Vertex);
                 break;
             case 3:
                 character.Spawn(graph.Vertex.Count - 1, graph.Vertex);
