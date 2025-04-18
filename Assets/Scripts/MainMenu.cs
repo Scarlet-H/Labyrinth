@@ -31,7 +31,7 @@ public class MainMenu : MonoBehaviour
         mode = PlayerPrefs.GetInt("mode", 0);
         if (mode == 0)
         {
-            mainCamera.backgroundColor = new Color(1f, 0.7607843f, 0.8196079f); //pink background
+            mainCamera.backgroundColor = new Color(0.8470588235294118f, 0.7764705882352941f, 1f); //lilac background
         }
         else
         {

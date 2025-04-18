@@ -5,7 +5,7 @@ public class SquareGraph : Graph
 {
     public int vertices;
     public Node squareNodePrefab;
-
+    public Transform parent; 
     public override void InitializeGraph()
     {
         screenWidth = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x - padding;
@@ -15,8 +15,11 @@ public class SquareGraph : Graph
         {
             for (int j = 0; j < vertices; j++)
             {
-                Node node = Instantiate(squareNodePrefab, new Vector2(-screenWidth + desiredSize / 2f + j * desiredSize, screenWidth - desiredSize / 2f - i * desiredSize), Quaternion.identity);
-                node.transform.localScale = new Vector3(desiredSize / 1.9f, desiredSize / 1.9f, 1);
+                Node node = Instantiate(squareNodePrefab, new Vector2(
+                    -screenWidth + desiredSize / 2f + j * desiredSize,
+                    screenWidth - desiredSize / 2f - i * desiredSize),
+                    Quaternion.identity,parent);
+                node.transform.localScale = new Vector3(desiredSize / 2f, desiredSize / 2f, 1);
                 node.id = Vertex.Count;
                 Vertex.Add(node);
             }

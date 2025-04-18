@@ -14,7 +14,7 @@ public class Graph : MonoBehaviour
     protected float desiredSize;
     protected float screenWidth;
     protected float screenHeight;
-    public readonly float padding = 0.5f;
+    public readonly float padding = 0.1f;
     public virtual void InitializeGraph() { }
 
     public void Renew() //renew the graph

@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public Character character;
-    public Coin coin;
+    public Friend friend;
     public TimeBonus timeBonus;
+    public SpeedBooster speedBooster;
     private Graph graph;
     public TriangleGraph triangleGraph;
     public SquareGraph squareGraph;
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
         mode = PlayerPrefs.GetInt("mode", 0);
         if (mode == 0)
         {
-            mainCamera.backgroundColor = new Color(1f, 0.7607843f, 0.8196079f);
+            mainCamera.backgroundColor = new Color(0.8470588235294118f, 0.7764705882352941f, 1f);
         }
         else
         {
@@ -39,24 +40,49 @@ public class GameManager : MonoBehaviour
         }
         //PlayerPrefs.DeleteAll();
         //game initialize
-        graph = triangleGraph;
-        graph.InitializeGraph();
-        //startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
+        squareGraph.InitializeGraph();
+        triangleGraph.InitializeGraph();
+        triangleGraph.gameObject.SetActive(false);
+        graph = squareGraph;
+        startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
         //print("starting point is " + startingPoint);
-        //graph.RDFS(startingPoint);
-        //spawnPoint = UnityEngine.Random.Range(0, 4);
-        //Spawn();
+        graph.RDFS(startingPoint);
+        spawnPoint = UnityEngine.Random.Range(0, 4);
+        Spawn();
     }
-
+    public void SwitchGraphType(int type)
+    {
+        graph = type switch
+        {
+            0 => squareGraph,
+            1 => triangleGraph,
+            _ => squareGraph,
+        };
+        switch (type)
+        {
+            case 0:
+                triangleGraph.gameObject.SetActive(false);
+                squareGraph.gameObject.SetActive(true);
+                break;
+            case 1:
+                triangleGraph.gameObject.SetActive(true);
+                squareGraph.gameObject.SetActive(false);
+                break;
+            default:
+                break;
+        }
+    }
     public void BackToMenu()
     {
         SceneManager.LoadSceneAsync(0);
     }
     public void NextLevel()
     {
+        SwitchGraphType(UnityEngine.Random.Range(0, 2));
         graph.Renew();  //renew the graph
         ScoreManager.instance.AddPoint();   //add point to the score
         startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1); //choose new random start point for generating
+        //print("starting point is " + startingPoint);
         graph.RDFS(startingPoint); //use RDFS to generate labyrinth 
         spawnPoint = UnityEngine.Random.Range(0, 4); //choose a random spawn point for character
         Spawn(); //spawn character and coin and timebonus (if needed)
@@ -68,25 +94,27 @@ public class GameManager : MonoBehaviour
         {
             case 0:
                 character.Spawn(0, graph.Vertex);
-                coin.Spawn(graph.Vertex.Count - 1, graph.Vertex);
+                friend.Spawn(graph.Vertex.Count - 1, graph.Vertex);
                 break;
             case 1:
                 character.Spawn(graph.Vertex.Count - 1, graph.Vertex);
-                coin.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
+                friend.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
                 break;
             case 2:
                 character.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
-                coin.Spawn(graph.Vertex.Count - 1, graph.Vertex);
+                friend.Spawn(graph.Vertex.Count - 1, graph.Vertex);
                 break;
             case 3:
                 character.Spawn(graph.Vertex.Count - 1, graph.Vertex);
-                coin.Spawn(0, graph.Vertex);
+                friend.Spawn(0, graph.Vertex);
                 break;
             default:
                 break;
         }
-        if(PlayerPrefs.GetInt("timedPlay") == 1) //if timedmode spawn timeBonuses
-            if(UnityEngine.Random.Range(0,2)==0)
+        if (UnityEngine.Random.Range(0, 2) == 0)
+            speedBooster.Spawn(UnityEngine.Random.Range(1, graph.Vertex.Count - 2), graph.Vertex);
+        if (PlayerPrefs.GetInt("timedPlay") == 1) //if timedmode spawn timeBonuses
+            if (UnityEngine.Random.Range(0, 3) != 0)
                 timeBonus.Spawn(UnityEngine.Random.Range(1, graph.Vertex.Count - 2), graph.Vertex);
     }
     public void GameOver()

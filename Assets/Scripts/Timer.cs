@@ -46,6 +46,6 @@ public class Timer : MonoBehaviour
     }
     public void AddTime() //add time on TimeBonus collection
     {
-        remainingTime += 20;
+        remainingTime += 10;
     }
 }

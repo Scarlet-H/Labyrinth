@@ -8,13 +8,15 @@ public class TriangleGraph : Graph
     public int rows, cols; // Количество строк и столбцов
     public TriangleNode triangleNodePrefab;
     float triangleHeight;
+    public Transform parent;
     public override void InitializeGraph()
     {
-        rows = cols-cols/3;
+        rows = (cols+3)/2;
         print(Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x);
-        screenWidth = 2f*(Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x-padding);
-        screenHeight = 2f *Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).y;
-        desiredSize = screenWidth / cols;
+        Vector2 screenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        screenWidth = 2f * (screenBounds.x - padding);
+        screenHeight = 2f * screenBounds.y;
+        desiredSize = screenWidth / ((cols+1)/2);
         triangleHeight = Mathf.Sqrt(3) * desiredSize/2f ; // Высота равностороннего треугольника
 
         Vertex = new List<Node>();
@@ -26,11 +28,11 @@ public class TriangleGraph : Graph
                 bool isUp = (i + j) % 2 == 0; // Верхний или нижний треугольник
 
                 Vector2 position = new(
-                    -screenWidth / 2f+desiredSize/2f + j*desiredSize,
-                    1.75f -i * 2f*triangleHeight + (isUp?0: triangleHeight)
+                    -screenWidth/2f + desiredSize/2f  + j * desiredSize/2f,
+                    screenHeight *0.2f - i*triangleHeight + (isUp ? 0 : triangleHeight/3f)
                 );
-                TriangleNode node = Instantiate(triangleNodePrefab, position, isUp ? Quaternion.identity : Quaternion.Euler(0, 0, 180));
-                node.transform.localScale = new Vector3(desiredSize, desiredSize, 1);
+                TriangleNode node = Instantiate(triangleNodePrefab, position, isUp ? Quaternion.identity : Quaternion.Euler(0, 0, 180), parent);
+                node.transform.localScale = new Vector3(desiredSize/2f, desiredSize/2f, 1);
                 node.id = Vertex.Count;
                 node.isUp = isUp;
                 Vertex.Add(node);
@@ -57,6 +59,6 @@ public class TriangleGraph : Graph
                 if (row > 0) Vertex[i].Neighbors.Add(Vertex[i - cols]); // Верхний (верхний )
             }
         }
-        print("initialized triangle graph");
+        //print("initialized triangle graph");
     }
 }

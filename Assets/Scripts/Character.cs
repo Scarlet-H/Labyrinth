@@ -14,15 +14,22 @@ public class Character : MonoBehaviour
     Vector2 characterPosition;
     Vector2 direction;
     Rigidbody2D rb;
-    CapsuleCollider2D cc;
     public float moveSpeed;
-    public Animator animator;
     public Text test;
+    private SpriteRenderer spriteRenderer;
+    public Sprite upSprite;
+    public Sprite downSprite;
+    public Sprite leftSprite;
+    public Sprite rightSprite;
+    private float referenceScale = 0.08f;
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        cc = GetComponent<CapsuleCollider2D>();
-        animator = GetComponent<Animator>();
+        float targetHeightUnits = 10f; 
+        float worldHeight = Camera.main.orthographicSize * 2f;
+        float scaleFactor = worldHeight / targetHeightUnits;
+        transform.localScale = Vector3.one * (referenceScale * scaleFactor);
     }
 
     // Update is called once per frame
@@ -42,57 +49,29 @@ public class Character : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(cursorPos == Vector2.zero)
+        if (cursorPos == Vector2.zero)
         {
             rb.linearVelocity = Vector2.zero;
-            animator.SetBool("goingDown", true);
+            spriteRenderer.sprite = downSprite;
         }
         else
         {
             rb.linearVelocity = direction.normalized * moveSpeed;
 
-            animator.SetBool("goingUp", false);
-            animator.SetBool("goingDown", false);
-            animator.SetBool("goingLeft", false);
-            animator.SetBool("goingRight", false);
-
-            if (rb.linearVelocity.y > 0)
+            if (Mathf.Abs(rb.linearVelocity.y) > Mathf.Abs(rb.linearVelocity.x))
             {
-                if (Math.Abs(rb.linearVelocity.x) > Math.Abs(rb.linearVelocity.y))
-                {
-                    if (rb.linearVelocity.x > 0)
-                    {
-                        animator.SetBool("goingRight", true);
-                    }
-                    else
-                    {
-                        animator.SetBool("goingLeft", true);
-                    }
-                }
+                if (rb.linearVelocity.y > 0)
+                    spriteRenderer.sprite = upSprite;
                 else
-                {
-                    animator.SetBool("goingUp", true);
-                }
+                    spriteRenderer.sprite = downSprite;
             }
             else
             {
-                if (Math.Abs(rb.linearVelocity.x) > Math.Abs(rb.linearVelocity.y))
-                {
-                    if (rb.linearVelocity.x > 0)
-                    {
-                        animator.SetBool("goingRight", true);
-                    }
-                    else
-                    {
-                        animator.SetBool("goingLeft", true);
-                    }
-                }
+                if (rb.linearVelocity.x > 0)
+                    spriteRenderer.sprite = rightSprite;
                 else
-                {
-                    animator.SetBool("goingDown", true);
-                }
+                    spriteRenderer.sprite = leftSprite;
             }
-
         }
     }
     public void Spawn(int spawnPoint, List<Node>_Vertex)
@@ -101,9 +80,9 @@ public class Character : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Coin"))
+        if(collision.gameObject.CompareTag("Friend"))
         {
-            //generate new labyrinth hide the coin
+            //generate new labyrinth hide the friend
             collision.gameObject.SetActive(false);
             GameManager.Instance.NextLevel();
             moveSpeed += 0.05f;
