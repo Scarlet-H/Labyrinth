@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private Graph graph;
     public TriangleGraph triangleGraph;
     public SquareGraph squareGraph;
+    public HexagonGraph hexagonGraph;
     public int startingPoint;
     public int spawnPoint;
     public int mode = 0;
@@ -40,12 +41,15 @@ public class GameManager : MonoBehaviour
         }
         //PlayerPrefs.DeleteAll();
         //game initialize
+
+
         squareGraph.InitializeGraph();
+        hexagonGraph.InitializeGraph();
+        hexagonGraph.gameObject.SetActive(false);
         triangleGraph.InitializeGraph();
         triangleGraph.gameObject.SetActive(false);
         graph = squareGraph;
         startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
-        //print("starting point is " + startingPoint);
         graph.RDFS(startingPoint);
         spawnPoint = UnityEngine.Random.Range(0, 4);
         Spawn();
@@ -56,6 +60,7 @@ public class GameManager : MonoBehaviour
         {
             0 => squareGraph,
             1 => triangleGraph,
+            2 => hexagonGraph,
             _ => squareGraph,
         };
         switch (type)
@@ -63,9 +68,16 @@ public class GameManager : MonoBehaviour
             case 0:
                 triangleGraph.gameObject.SetActive(false);
                 squareGraph.gameObject.SetActive(true);
+                hexagonGraph.gameObject.SetActive(false);
                 break;
             case 1:
                 triangleGraph.gameObject.SetActive(true);
+                squareGraph.gameObject.SetActive(false);
+                hexagonGraph.gameObject.SetActive(false);
+                break;
+            case 2:
+                hexagonGraph.gameObject.SetActive(true);
+                triangleGraph.gameObject.SetActive(false);
                 squareGraph.gameObject.SetActive(false);
                 break;
             default:
@@ -78,7 +90,7 @@ public class GameManager : MonoBehaviour
     }
     public void NextLevel()
     {
-        SwitchGraphType(UnityEngine.Random.Range(0, 2));
+        SwitchGraphType(UnityEngine.Random.Range(0, 3));
         graph.Renew();  //renew the graph
         ScoreManager.instance.AddPoint();   //add point to the score
         startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1); //choose new random start point for generating

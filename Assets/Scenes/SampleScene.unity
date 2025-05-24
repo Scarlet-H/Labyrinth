@@ -515,6 +515,7 @@ MonoBehaviour:
   speedBooster: {fileID: 1350735962}
   triangleGraph: {fileID: 1543339423}
   squareGraph: {fileID: 1636647363}
+  hexagonGraph: {fileID: 1577773541}
   startingPoint: 0
   spawnPoint: 0
   mode: 0
@@ -644,7 +645,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.614, y: 4.1, z: 5}
-  m_LocalScale: {x: 0.085, y: 0.085, z: 0.085}
+  m_LocalScale: {x: 0.083, y: 0.083, z: 0.083}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -814,8 +815,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
-  m_fontSizeBase: 300
+  m_fontSize: 200
+  m_fontSizeBase: 200
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -882,8 +883,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 333.87, y: 314.3}
-  m_SizeDelta: {x: 542.9792, y: 209.93372}
+  m_AnchoredPosition: {x: 244.39, y: 262.24}
+  m_SizeDelta: {x: 364.0267, y: 140.7448}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1181665322
 GameObject:
@@ -1361,8 +1362,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vertex: []
-  rows: 6
-  cols: 11
+  rows: 8
+  cols: 13
   triangleNodePrefab: {fileID: 4894693290379117992, guid: 2558e78c34bd60446a97cb50530a91ad,
     type: 3}
   parent: {fileID: 1543339424}
@@ -1518,6 +1519,55 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
+--- !u!1 &1577773540
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1577773542}
+  - component: {fileID: 1577773541}
+  m_Layer: 0
+  m_Name: HexagonGraph
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1577773541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577773540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e700f40cc8f53544f87b5a2d2ced86bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Vertex: []
+  cols: 4
+  hexagonNodePrefab: {fileID: 2599214226033446824, guid: 913ff2e1ec7dedc4f89734c1f0e2ef06,
+    type: 3}
+  parent: {fileID: 1577773542}
+--- !u!4 &1577773542
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577773540}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1578174271
 GameObject:
   m_ObjectHideFlags: 0
@@ -1978,3 +2028,4 @@ SceneRoots:
   - {fileID: 1577739818}
   - {fileID: 1181665326}
   - {fileID: 1543339424}
+  - {fileID: 1577773542}

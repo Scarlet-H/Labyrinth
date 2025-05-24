@@ -12,7 +12,6 @@ public class TriangleGraph : Graph
     public override void InitializeGraph()
     {
         rows = (cols+3)/2;
-        print(Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x);
         Vector2 screenBounds = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
         screenWidth = 2f * (screenBounds.x - padding);
         screenHeight = 2f * screenBounds.y;
@@ -46,19 +45,18 @@ public class TriangleGraph : Graph
             int col = i % cols;
             bool isUp = (row + col) % 2 == 0; // Верхний треугольник 
 
-            if (isUp) // Верхний 
+            if (isUp) //верхний 
             {
-                if (col > 0) Vertex[i].Neighbors.Add(Vertex[i - 1]); // Левый (нижний )
-                if (col < cols - 1) Vertex[i].Neighbors.Add(Vertex[i + 1]); // Правый (нижний )
-                if (row < rows - 1) Vertex[i].Neighbors.Add(Vertex[i + cols]); // Нижний (нижний )
+                if (col > 0) Vertex[i].Neighbors.Add(Vertex[i - 1]); //левый (нижний)
+                if (col < cols - 1) Vertex[i].Neighbors.Add(Vertex[i + 1]); //правый (нижний)
+                if (row < rows - 1) Vertex[i].Neighbors.Add(Vertex[i + cols]); //нижний (нижний)
             }
-            else // Нижний 
+            else //нижний 
             {
-                if (col > 0) Vertex[i].Neighbors.Add(Vertex[i - 1]); // Левый (верхний )
-                if (col < cols - 1) Vertex[i].Neighbors.Add(Vertex[i + 1]); // Правый (верхний )
-                if (row > 0) Vertex[i].Neighbors.Add(Vertex[i - cols]); // Верхний (верхний )
+                if (col > 0) Vertex[i].Neighbors.Add(Vertex[i - 1]); //левый (верхний)
+                if (col < cols - 1) Vertex[i].Neighbors.Add(Vertex[i + 1]); //правый (верхний)
+                if (row > 0) Vertex[i].Neighbors.Add(Vertex[i - cols]); //верхний (верхний)
             }
         }
-        //print("initialized triangle graph");
     }
 }

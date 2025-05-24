@@ -21,7 +21,7 @@ public class Character : MonoBehaviour
     public Sprite downSprite;
     public Sprite leftSprite;
     public Sprite rightSprite;
-    private float referenceScale = 0.08f;
+    private readonly float referenceScale = 0.068f;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();

@@ -1044,7 +1044,7 @@ MonoBehaviour:
     m_LineSpacing: 0.7
   m_Text: 'LABYRINTH:
 
-    FRIENDS'
+    ENDLESS'
 --- !u!222 &1682692527
 CanvasRenderer:
   m_ObjectHideFlags: 0
