@@ -21,6 +21,7 @@ public class Graph : MonoBehaviour
     {
         foreach(Node element in Vertex) //for each vertex
         {
+            element.set = null;
             element.visited = false; //make them unvisited 
             foreach(Transform child in element.transform) //for every wall of the vertex
             {

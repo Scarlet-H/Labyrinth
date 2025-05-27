@@ -7,6 +7,7 @@ public class Node : MonoBehaviour
     public List<Node> Neighbors = new();
     public int id;
     public bool visited = false;
+    public HashSet<Node> set; //дл€ алгоритма Ёллера
     public virtual void EraseSide(Node second)
     {
         if(transform.position.x < second.transform.position.x)

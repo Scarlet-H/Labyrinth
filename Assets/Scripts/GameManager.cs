@@ -49,8 +49,10 @@ public class GameManager : MonoBehaviour
         triangleGraph.InitializeGraph();
         triangleGraph.gameObject.SetActive(false);
         graph = squareGraph;
-        startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
-        graph.RDFS(startingPoint);
+        squareGraph.Eller();
+        //squareGraph.BinaryTree();
+        //startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
+        //graph.RDFS(startingPoint);
         spawnPoint = UnityEngine.Random.Range(0, 4);
         Spawn();
     }

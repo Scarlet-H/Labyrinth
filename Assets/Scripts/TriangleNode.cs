@@ -12,36 +12,48 @@ public class TriangleNode : Node
         {
             if (transform.position.x < second.transform.position.x)
             {
-                transform.Find("RightWall").gameObject.SetActive(false);
-                second.transform.Find("RightWall").gameObject.SetActive(false);
+                transform.Find("RightWall").
+                    gameObject.SetActive(false);
+                second.transform.Find("RightWall").
+                    gameObject.SetActive(false);
             }
             else if (transform.position.x > second.transform.position.x)
             {
-                transform.Find("LeftWall").gameObject.SetActive(false);
-                second.transform.Find("LeftWall").gameObject.SetActive(false);
+                transform.Find("LeftWall").
+                    gameObject.SetActive(false);
+                second.transform.Find("LeftWall").
+                    gameObject.SetActive(false);
             }
             else
             {
-                transform.Find("DownWall").gameObject.SetActive(false);
-                second.transform.Find("DownWall").gameObject.SetActive(false);
+                transform.Find("DownWall").
+                    gameObject.SetActive(false);
+                second.transform.Find("DownWall").
+                    gameObject.SetActive(false);
             }
         }
         else
         {
             if (transform.position.x < second.transform.position.x)
             {
-                transform.Find("LeftWall").gameObject.SetActive(false);
-                second.transform.Find("LeftWall").gameObject.SetActive(false);
+                transform.Find("LeftWall").
+                    gameObject.SetActive(false);
+                second.transform.Find("LeftWall").
+                    gameObject.SetActive(false);
             }
             else if (transform.position.x > second.transform.position.x)
             {
-                transform.Find("RightWall").gameObject.SetActive(false);
-                second.transform.Find("RightWall").gameObject.SetActive(false);
+                transform.Find("RightWall").
+                    gameObject.SetActive(false);
+                second.transform.Find("RightWall").
+                    gameObject.SetActive(false);
             }
             else
             {
-                transform.Find("DownWall").gameObject.SetActive(false);
-                second.transform.Find("DownWall").gameObject.SetActive(false);
+                transform.Find("DownWall").
+                    gameObject.SetActive(false);
+                second.transform.Find("DownWall").
+                    gameObject.SetActive(false);
             }
         }
     }
