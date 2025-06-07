@@ -44,12 +44,13 @@ public class GameManager : MonoBehaviour
 
 
         squareGraph.InitializeGraph();
-        hexagonGraph.InitializeGraph();
-        hexagonGraph.gameObject.SetActive(false);
+        squareGraph.gameObject.SetActive(false);
+        //hexagonGraph.InitializeGraph();
+        //hexagonGraph.gameObject.SetActive(false);
         triangleGraph.InitializeGraph();
-        triangleGraph.gameObject.SetActive(false);
-        graph = squareGraph;
-        squareGraph.Eller();
+        // triangleGraph.gameObject.SetActive(false);
+        graph = triangleGraph;
+        triangleGraph.Eller();
         //squareGraph.BinaryTree();
         //startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
         //graph.RDFS(startingPoint);

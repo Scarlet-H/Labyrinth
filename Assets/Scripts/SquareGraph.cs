@@ -142,9 +142,9 @@ public class SquareGraph : Graph
             if (j < vertices - 1) //генерируем вертикальные проходы если строка не последняя
             {
                 var setsInRow = currentRow //группировка вершин по множествам в одной строке
-                .Select(node => node.set)
-                .Distinct()
-                .ToList();
+                    .Select(node => node.set)
+                    .Distinct()
+                    .ToList();
                 foreach (var nodeSet in setsInRow) //для каждого множества в ряду
                 {
                     var nodes = nodeSet //из множества выбираем вершины только из текущего ряда
