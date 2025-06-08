@@ -114,7 +114,7 @@ public class SquareGraph : Graph
     {
         for (int j = 0; j < vertices; j++) //инициализация  строки j-row, i-col
         {
-            List<Node> currentRow = new List<Node>();
+            List<Node> currentRow = new();
             for (int i = 0; i < vertices; i++)
             {
                 Node currentNode = Vertex[i + j * vertices];
