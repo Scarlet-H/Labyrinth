@@ -172,8 +172,8 @@ public class SquareGraph : Graph
             {
                 for(int i = 0; i < vertices-1; i++)
                 {
-                    Node currentNode = Vertex[i + vertices * (vertices - 1)];
-                    Node rightNeighbor = Vertex[i +1+ vertices * (vertices - 1)];
+                    Node currentNode = Vertex[i + vertices * j];
+                    Node rightNeighbor = Vertex[i +1+ vertices * j];
                     if (currentNode.set != rightNeighbor.set)
                     {
                         currentNode.EraseSide(rightNeighbor);

@@ -40,20 +40,17 @@ public class GameManager : MonoBehaviour
             mainCamera.backgroundColor = Color.black;
         }
         //PlayerPrefs.DeleteAll();
+
         //game initialize
-
-
         squareGraph.InitializeGraph();
-        squareGraph.gameObject.SetActive(false);
+        //squareGraph.gameObject.SetActive(false);
         hexagonGraph.InitializeGraph();
-        //hexagonGraph.gameObject.SetActive(false);
+        hexagonGraph.gameObject.SetActive(false);
         triangleGraph.InitializeGraph();
         triangleGraph.gameObject.SetActive(false);
-        graph = hexagonGraph;
-        //squareGraph.BinaryTree();
-        hexagonGraph.BinaryTree();
+        graph = squareGraph;
         startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
-        //graph.RDFS(startingPoint);
+        graph.RDFS(startingPoint);
         spawnPoint = UnityEngine.Random.Range(0, 4);
         Spawn();
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,23 +62,26 @@ public class TriangleGraph : Graph
     }
     public void Eller()
     {
-        for (int row = 0; row < rows; row++)
+        for (int row = 0; row < rows; row++) //проходим по каждой строке сетки
         {
             List<Node> currentRow = new List<Node>();
-            for (int col = 0; col < cols; col++)
+            //собираем текущую строку
+            for (int col = 0; col < cols; col++) //проходим по столбцам
             {
                 Node currentNode = Vertex[col + row * cols];
+                //если узел не принадлежит множеству - создаем новое
                 if (currentNode.set == null)
                 {
                     currentNode.set = new HashSet<Node> { currentNode };
                 }
                 currentRow.Add(currentNode);
             }
+            //горизонтальные соединения
             for (int i = 0; i < cols - 1; i++)
             {
                 if (currentRow[i].set != currentRow[i + 1].set)
                 {
-                    if (UnityEngine.Random.Range(0, 2) == 0)
+                    if (!((TriangleNode)currentRow[i]).isUp)
                     {
                         currentRow[i].EraseSide(currentRow[i + 1]);
                         currentRow[i].set.UnionWith(currentRow[i + 1].set);
@@ -86,10 +90,37 @@ public class TriangleGraph : Graph
                             node.set = currentRow[i].set;
                         }
                     }
+                    else
+                    {
+                        if (UnityEngine.Random.Range(0, 2) == 0)
+                        {
+                            currentRow[i].EraseSide(currentRow[i + 1]);
+                            currentRow[i].set.UnionWith(currentRow[i + 1].set);
+                            foreach (var node in currentRow[i + 1].set)
+                            {
+                                node.set = currentRow[i].set;
+                            }
+                        }
+                    }
                 }
             }
+            //отдельно горизонтальное соединение влево нижнего треугольника последнего столбца
+            if (!((TriangleNode)currentRow[cols - 1]).isUp)
+            {
+                if(currentRow[cols - 1].set!= currentRow[cols - 2].set)
+                {
+                    currentRow[cols - 1].EraseSide(currentRow[cols - 2]);
+                    currentRow[cols - 1].set.UnionWith(currentRow[cols - 2].set);
+                    foreach (var node in currentRow[cols - 2].set)
+                    {
+                        node.set = currentRow[cols - 1].set;
+                    }
+                }
+            }
+            //вертикальные соединения, если строка не последняя
             if (row < rows - 1)
             {
+                //уникальные множества из текущей строки
                 var setsInRow = currentRow
                     .Select(node => node.set)
                     .Distinct()
@@ -98,16 +129,19 @@ public class TriangleGraph : Graph
                 {
                     var nodes = nodeSet //из множества выбираем вершины только из текущего ряда
                         .Where(node => currentRow.Contains(node))
+                        .Cast<TriangleNode>()
+                        .Where(node => node.isUp) //только верхние треугольники
                         .ToList();
                     nodes = nodes
-                        .OrderBy(_ => UnityEngine.Random.value).ToList();
+                        .OrderBy(_ => UnityEngine.Random.value).ToList(); //перемешиваем
+                    if (nodes.Count == 0)
+                        continue;
+                    //выбираем случайное количество соединений вниз
                     int connectionsCount = UnityEngine.Random.Range(1, nodes.Count + 1);
                     for (int i = 0; i < connectionsCount; i++)
                     {
                         Node node = nodes[i];
                         Node bottomNode = Vertex[node.id + cols];
-                        if (bottomNode.id % 2 == 0)
-                            continue;
                         if (node.set != bottomNode.set)
                         {
                             node.EraseSide(bottomNode);
@@ -117,12 +151,13 @@ public class TriangleGraph : Graph
                     }
                 }
             }
+            //последняя строка
             else
             {
-                for(int i = 0; i < cols - 1; i++)
+                for (int i = 0; i < cols - 1; i++)
                 {
-                    Node currentNode = Vertex[i + row * (row - 1)];
-                    Node rightNeighbor = Vertex[i + 1 + row * (row - 1)];
+                    Node currentNode = Vertex[i + cols * row];
+                    Node rightNeighbor = Vertex[i + 1 + cols * row];
                     if (currentNode.set != rightNeighbor.set)
                     {
                         currentNode.EraseSide(rightNeighbor);
