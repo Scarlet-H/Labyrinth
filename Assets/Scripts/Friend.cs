@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Friend : MonoBehaviour
 {
-    private float referenceScale = 0.08f;
+    private readonly float referenceScale = 0.08f;
     private void Start()
     {
         float targetHeightUnits = 10f;

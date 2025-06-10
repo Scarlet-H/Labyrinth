@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -15,12 +16,9 @@ public class GameManager : MonoBehaviour
     public TriangleGraph triangleGraph;
     public SquareGraph squareGraph;
     public HexagonGraph hexagonGraph;
-    public int startingPoint;
-    public int spawnPoint;
-    public int mode = 0;
+    private int mode = 0;
     public Camera mainCamera;
     public Canvas gameOver;
-    public bool isGameOver = false;
     private void Awake()
     {
         Instance = this;
@@ -29,7 +27,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameOver.gameObject.SetActive(false);
-        isGameOver = false;
         mode = PlayerPrefs.GetInt("mode", 0);
         if (mode == 0)
         {
@@ -49,10 +46,8 @@ public class GameManager : MonoBehaviour
         triangleGraph.InitializeGraph();
         triangleGraph.gameObject.SetActive(false);
         graph = squareGraph;
-        startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1);
-        graph.RDFS(startingPoint);
-        spawnPoint = UnityEngine.Random.Range(0, 4);
-        Spawn();
+        graph.RDFS(UnityEngine.Random.Range(0, graph.Vertex.Count - 1));
+        Spawn(UnityEngine.Random.Range(0, 2));
     }
     public void SwitchGraphType(int type)
     {
@@ -84,6 +79,24 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    public void ChooseAlgorythm(int type)
+    {
+        switch (type)
+        {
+            case 0:
+                graph.RDFS(UnityEngine.Random.Range(0, graph.Vertex.Count - 1));
+                break;
+            case 1:
+                graph.BinaryTree();
+                break;
+            case 2:
+                graph.Eller();
+                break;
+            default:
+                graph.RDFS(UnityEngine.Random.Range(0, graph.Vertex.Count - 1));
+                break;
+        }
+    }
     public void BackToMenu()
     {
         SceneManager.LoadSceneAsync(0);
@@ -92,15 +105,11 @@ public class GameManager : MonoBehaviour
     {
         SwitchGraphType(UnityEngine.Random.Range(0, 3));
         graph.Renew();  //renew the graph
-        ScoreManager.instance.AddPoint();   //add point to the score
-        startingPoint = UnityEngine.Random.Range(0, graph.Vertex.Count - 1); //choose new random start point for generating
-        //print("starting point is " + startingPoint);
-        graph.RDFS(startingPoint); //use RDFS to generate labyrinth 
-        spawnPoint = UnityEngine.Random.Range(0, 4); //choose a random spawn point for character
-        Spawn(); //spawn character and coin and timebonus (if needed)
-
+        ChooseAlgorythm(UnityEngine.Random.Range(0, 3));
+        ScoreManager.instance.AddPoint(1);   //add point to the score
+        Spawn(UnityEngine.Random.Range(0, 2)); //spawn character and coin and timebonus (if needed)
     }
-    void Spawn()//spawn character and coin and timebonus (if needed)
+    void Spawn(int spawnPoint)//spawn character and coin and timebonus (if needed)
     {
         switch (spawnPoint)
         {
@@ -109,14 +118,6 @@ public class GameManager : MonoBehaviour
                 friend.Spawn(graph.Vertex.Count - 1, graph.Vertex);
                 break;
             case 1:
-                character.Spawn(graph.Vertex.Count - 1, graph.Vertex);
-                friend.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
-                break;
-            case 2:
-                character.Spawn(graph.Vertex.Count - graph.Vertex.Count, graph.Vertex);
-                friend.Spawn(graph.Vertex.Count - 1, graph.Vertex);
-                break;
-            case 3:
                 character.Spawn(graph.Vertex.Count - 1, graph.Vertex);
                 friend.Spawn(0, graph.Vertex);
                 break;
@@ -132,6 +133,6 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         gameOver.gameObject.SetActive(true);
-        isGameOver = true;
+        Character.Instance.speed = 0;
     }
 }

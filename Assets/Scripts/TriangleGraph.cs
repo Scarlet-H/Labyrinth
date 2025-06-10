@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TriangleGraph : Graph
@@ -60,11 +61,15 @@ public class TriangleGraph : Graph
             }
         }
     }
-    public void Eller()
+    public override void BinaryTree()
+    {
+        RDFS(UnityEngine.Random.Range(0, Vertex.Count - 1));
+    }
+    public override void Eller()
     {
         for (int row = 0; row < rows; row++) //проходим по каждой строке сетки
         {
-            List<Node> currentRow = new List<Node>();
+            List<Node> currentRow = new();
             //собираем текущую строку
             for (int col = 0; col < cols; col++) //проходим по столбцам
             {
@@ -170,5 +175,6 @@ public class TriangleGraph : Graph
                 }
             }
         }
+        print("Eller complete");
     }
 }

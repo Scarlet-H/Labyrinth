@@ -23,9 +23,9 @@ public class ScoreManager : MonoBehaviour
         highscoreText.text = "Highscore: "+highscore.ToString();
     }
 
-    public void AddPoint()
+    public void AddPoint(int amount)
     {
-        score++;
+        score+=amount;
         scoreText.text = score.ToString();
         if (highscore < score)
         {

@@ -7,13 +7,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Character : MonoBehaviour
 {
-    Vector2 cursorPos;
-    Vector2 characterPosition;
-    Vector2 direction;
-    Rigidbody2D rb;
+    public static Character Instance;
     public float moveSpeed;
     public Text test;
     private SpriteRenderer spriteRenderer;
@@ -22,56 +21,41 @@ public class Character : MonoBehaviour
     public Sprite leftSprite;
     public Sprite rightSprite;
     private readonly float referenceScale = 0.068f;
+    [SerializeField] private InputActionReference moveActionToUse;
+    public float speed;
+    private Vector2 moveDirection;
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
         float targetHeightUnits = 10f; 
         float worldHeight = Camera.main.orthographicSize * 2f;
         float scaleFactor = worldHeight / targetHeightUnits;
         transform.localScale = Vector3.one * (referenceScale * scaleFactor);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && !GameManager.Instance.isGameOver)
-        { 
-            cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            characterPosition = transform.position;
-            direction = cursorPos - characterPosition;
-            test.text = direction.x.ToString()+" "+direction.y.ToString();
-        }
-        else
-        {
-            cursorPos = Vector2.zero;
-        }
+        moveDirection = moveActionToUse.action.ReadValue<Vector2>();
+        transform.Translate(speed * Time.deltaTime * moveDirection);
     }
     private void FixedUpdate()
     {
-        if (cursorPos == Vector2.zero)
+        if(Mathf.Abs(moveDirection.y) > Mathf.Abs(moveDirection.x))
         {
-            rb.linearVelocity = Vector2.zero;
-            spriteRenderer.sprite = downSprite;
+            if (moveDirection.y > 0)
+                spriteRenderer.sprite = upSprite;
+            else
+                spriteRenderer.sprite = downSprite;
         }
         else
         {
-            rb.linearVelocity = direction.normalized * moveSpeed;
-
-            if (Mathf.Abs(rb.linearVelocity.y) > Mathf.Abs(rb.linearVelocity.x))
-            {
-                if (rb.linearVelocity.y > 0)
-                    spriteRenderer.sprite = upSprite;
-                else
-                    spriteRenderer.sprite = downSprite;
-            }
+            if (moveDirection.x > 0)
+                spriteRenderer.sprite = rightSprite;
             else
-            {
-                if (rb.linearVelocity.x > 0)
-                    spriteRenderer.sprite = rightSprite;
-                else
-                    spriteRenderer.sprite = leftSprite;
-            }
+                spriteRenderer.sprite = leftSprite;
         }
     }
     public void Spawn(int spawnPoint, List<Node>_Vertex)
@@ -85,7 +69,7 @@ public class Character : MonoBehaviour
             //generate new labyrinth hide the friend
             collision.gameObject.SetActive(false);
             GameManager.Instance.NextLevel();
-            moveSpeed += 0.05f;
+            speed += 0.025f;
         }
         if(collision.gameObject.CompareTag("TimeBonus"))
         {
@@ -96,8 +80,9 @@ public class Character : MonoBehaviour
         if (collision.gameObject.CompareTag("SpeedBooster"))
         {
             //add moveSpeed and hide the booster
+            ScoreManager.instance.AddPoint(5);
             collision.gameObject.SetActive(false);
-            moveSpeed += 0.5f;
+            speed += 0.05f;
         }
     }
 }

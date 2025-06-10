@@ -82,13 +82,13 @@ public class HexagonGraph : Graph
             }
         }
     }
-    public void BinaryTree()
+    public override void BinaryTree()
     {
         for (int i = 0; i < Vertex.Count; i++)
         {
             Node current = Vertex[i]; //текущая вершина
-            Node south_east = null;
-            Node south = null;
+            Node south_east;
+            Node south;
             Node north_east = null;
             if ((i % allCols) % 2 == 0) //верхний
             {
@@ -119,12 +119,13 @@ public class HexagonGraph : Graph
                 current.EraseSide(north_east);
             }
         }
+        print("Binary Tree complete");
     }
-    public void Eller()
+    public override void Eller()
     {
         for (int row = 0; row < rows; row++)
         {
-            List<Node> currentRow = new List<Node>();
+            List<Node> currentRow = new();
             //собираем текущую строку
             for (int col = 0; col < allCols; col++) //проходим по столбцам
             {
@@ -201,5 +202,6 @@ public class HexagonGraph : Graph
                 }
             }
         }
+        print("Eller complete");
     }
 }

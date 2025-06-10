@@ -88,7 +88,7 @@ public class SquareGraph : Graph
             }
         }
     }
-    public void BinaryTree()
+    public override void  BinaryTree()
     {
         for (int i = 0; i < Vertex.Count; i++)
         {
@@ -109,8 +109,9 @@ public class SquareGraph : Graph
                 current.EraseSide(south);
             }
         }
+        print("Binary Tree complete");
     }
-    public void Eller()
+    public override void Eller()
     {
         for (int j = 0; j < vertices; j++) //инициализация  строки j-row, i-col
         {
@@ -186,5 +187,6 @@ public class SquareGraph : Graph
                 }
             }
         }
+        print("Eller complete");
     }
 }

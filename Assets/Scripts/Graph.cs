@@ -16,7 +16,8 @@ public class Graph : MonoBehaviour
     protected float screenHeight;
     public readonly float padding = 0.1f;
     public virtual void InitializeGraph() { }
-
+    public virtual void BinaryTree() { }
+    public virtual void Eller() { }
     public void Renew() //renew the graph
     {
         foreach(Node element in Vertex) //for each vertex
