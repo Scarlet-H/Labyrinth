@@ -11,11 +11,10 @@ public class ScoreManager : MonoBehaviour
     int score = 0;
     int highscore = 0;
 
-    private void Awake() //setting an instance of manager before the start of the game
+    private void Awake() 
     {
         instance = this;
     }
-    // Start is called before the first frame update
     void Start()
     {
         highscore = PlayerPrefs.GetInt("highscore", 0);
@@ -32,8 +31,6 @@ public class ScoreManager : MonoBehaviour
             highscore = score;
             highscoreText.text = "Highscore: " + highscore.ToString();
             PlayerPrefs.SetInt("highscore", score);
-
         }
-
     }
 }

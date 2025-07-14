@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    public static Timer Instance; //because i have to access this script from other scripts
+    public static Timer Instance; 
     [SerializeField] TextMeshProUGUI timerText;
     public float remainingTime;
     int minutes;

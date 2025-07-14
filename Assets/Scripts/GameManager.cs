@@ -36,11 +36,9 @@ public class GameManager : MonoBehaviour
         {
             mainCamera.backgroundColor = Color.black;
         }
-        //PlayerPrefs.DeleteAll();
 
         //game initialize
         squareGraph.InitializeGraph();
-        //squareGraph.gameObject.SetActive(false);
         hexagonGraph.InitializeGraph();
         hexagonGraph.gameObject.SetActive(false);
         triangleGraph.InitializeGraph();

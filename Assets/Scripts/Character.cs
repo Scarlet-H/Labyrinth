@@ -13,8 +13,7 @@ using UnityEngine.EventSystems;
 public class Character : MonoBehaviour
 {
     public static Character Instance;
-    public float moveSpeed;
-    public Text test;
+    //public Text test;
     private SpriteRenderer spriteRenderer;
     public Sprite upSprite;
     public Sprite downSprite;
